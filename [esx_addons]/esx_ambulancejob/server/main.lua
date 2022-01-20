@@ -160,15 +160,15 @@ end)
 ESX.RegisterServerCallback('esx_ambulancejob:storeNearbyVehicle', function(source, cb, plates)
 	local xPlayer = ESX.GetPlayerFromId(source)
 
-	local plate = MySQL.single.await('SELECT plate FROM owned_vehicles WHERE owner = ? AND plate IN (?) AND job = ?', {xPlayer.identifier, plates, xPlayer.job.name})
-
+	local plate = MySQL.single.await('SELECT plate FROM owned_vehicles WHERE owner = ? AND plate = ? AND job = ? ', {xPlayer.identifier, plates, xPlayer.job.name})
 	if plate then
-		MySQL.update('UPDATE owned_vehicles SET `stored` = true WHERE owner = ? AND plate = ? AND job = ?', {xPlayer.identifier, plate, xPlayer.job.name},
+		MySQL.update('UPDATE owned_vehicles SET `stored` = true, plate = ?, job = ? WHERE owner = ?', {plates, xPlayer.job.name, xPlayer.identifier},
 		function(rowsChanged)
+			print(rowsChanged)
 			if rowsChanged == 0 then
 				cb(false)
 			else
-				cb(plate)
+				cb(plates)
 			end
 		end)
 	else
