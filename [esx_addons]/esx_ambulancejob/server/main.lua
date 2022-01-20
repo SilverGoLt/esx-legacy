@@ -162,7 +162,7 @@ ESX.RegisterServerCallback('esx_ambulancejob:storeNearbyVehicle', function(sourc
 
 	local plate = MySQL.single.await('SELECT plate FROM owned_vehicles WHERE owner = ? AND plate = ? AND job = ? ', {xPlayer.identifier, plates, xPlayer.job.name})
 	if plate then
-		MySQL.update('UPDATE owned_vehicles SET `stored` = true, plate = ?, job = ? WHERE owner = ?', {plates, xPlayer.job.name, xPlayer.identifier},
+		MySQL.update('UPDATE owned_vehicles SET `stored` = true WHERE owner = ? AND plate = ? AND job = ?', {xPlayer.identifier, plates, xPlayer.job.name},
 		function(rowsChanged)
 			print(rowsChanged)
 			if rowsChanged == 0 then
