@@ -117,7 +117,7 @@ function StoreNearbyVehicle(playerCoords)
 			
 			-- Make sure the vehicle we're saving is empty, or else it wont be deleted
 			if GetVehicleNumberOfPassengers(vehicle) == 0 and IsVehicleSeatFree(vehicle, -1) then
-				local plate = ESX.Math.Trim(GetVehicleNumberPlateText(v))
+				local plate = ESX.Math.Trim(GetVehicleNumberPlateText(vehicle))
 				plates[#plates + 1] = plate
 				index[plate] = vehicle
 			end
@@ -129,7 +129,7 @@ function StoreNearbyVehicle(playerCoords)
 
 	ESX.TriggerServerCallback('esx_ambulancejob:storeNearbyVehicle', function(plate)
 		if plate then
-			local vehicleId = index[plate]
+			local vehicleId = index[plate[1]]
 			local attempts = 0
 			ESX.Game.DeleteVehicle(vehicleId)
 			isBusy = true
